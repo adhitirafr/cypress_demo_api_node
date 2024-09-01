@@ -25,6 +25,7 @@ export async function getList(req, res) {
       message: "200: Success. Data retrieved.",
       data: listData,
     });
+    
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({

@@ -1,22 +1,24 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
 export function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+  const token = req.cookies.authToken; // Access the HttpOnly cookie
 
-    if (!token) {
-        return res.status(401).json({
-            message: '401: Unauthorized. Please login with correct user'
-        })
+  if (!token) {
+    return res.status(401).json({
+      status: "error",
+      message: "Unauthorized. No token provided.",
+    });
+  }
+
+  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+    if (err) {
+      console.error("JWT verification error:", err); // Log the error for debugging
+      return res.status(403).json({
+        status: "error",
+        message: "Forbidden. Invalid token.",
+      });
     }
-
-    jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-        if (err) {
-            return res.status(403).json({
-                message: '403: Forbidden. Please login with correct user'
-            })
-        }
-        req.user = user
-        next()
-    })
+    req.user = user; // Attach user info to request object
+    next(); // Proceed to the next middleware or route handler
+  });
 }
