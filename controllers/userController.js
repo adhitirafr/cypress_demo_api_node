@@ -48,7 +48,6 @@ export async function register(req, res) {
       message: "201: Created. User registered successfully.",
     });
   } catch (error) {
-    console.log("error: " + error);
     return res.status(500).json({
       message: "500: Internal Server Error. Failed register.",
     });
@@ -119,7 +118,6 @@ export async function login(req, res) {
       },
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "500: Internal Server Error. Failed login.",
     });

@@ -27,7 +27,6 @@ export async function getList(req, res) {
     });
     
   } catch (error) {
-    console.error("Error:", error);
     return res.status(500).json({
       message: "500: Internal Server Error. Failed to get list of notes.",
       data: [],
